@@ -16,11 +16,13 @@ public class TaskController {
         this.taskRepo = taskRepo;
     }
 
+    // Get all task
     @GetMapping
     public List<Task> getAllTask() {
         return taskRepo.findAll();
     }
 
+    // Add a task
     @PostMapping
     public Task addTask(@RequestBody TaskDTO taskDTO) {
 
@@ -30,6 +32,26 @@ public class TaskController {
         task.setStatus(taskDTO.getStatus());
         task.setDueDate(taskDTO.getDueDate());
         return taskRepo.save(task);
+    }
+
+    // Update a Task
+    // ToDO If you dont wannt to update a certain field, that field must be the same as before it was updated.
+    @PutMapping("/{id}")
+    public Task updateTask(@RequestBody TaskDTO taskDTO, @PathVariable Long id) {
+        Task task = taskRepo.findById(id).orElseThrow();
+        task.setTitle(taskDTO.getTitle());
+        task.setDescription(taskDTO.getDescription());
+        task.setStatus(taskDTO.getStatus());
+        task.setDueDate(taskDTO.getDueDate());
+
+        return taskRepo.save(task);
+    }
+
+    // Delete a task
+    @DeleteMapping("/{id}")
+    public void deleteTask(@PathVariable Long id) {
+        Task task = taskRepo.findById(id).orElseThrow();
+        taskRepo.delete(task);
     }
 
 }
