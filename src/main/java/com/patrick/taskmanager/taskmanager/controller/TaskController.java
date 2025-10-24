@@ -5,6 +5,7 @@ import com.patrick.taskmanager.taskmanager.entity.Task;
 import com.patrick.taskmanager.taskmanager.repository.TaskRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -35,14 +36,26 @@ public class TaskController {
     }
 
     // Update a Task
-    // ToDO If you dont wannt to update a certain field, that field must be the same as before it was updated.
+    // ToDO If you dont want to update a certain field, that field must be the same as before it was updated.
     @PutMapping("/{id}")
     public Task updateTask(@RequestBody TaskDTO taskDTO, @PathVariable Long id) {
         Task task = taskRepo.findById(id).orElseThrow();
-        task.setTitle(taskDTO.getTitle());
-        task.setDescription(taskDTO.getDescription());
-        task.setStatus(taskDTO.getStatus());
-        task.setDueDate(taskDTO.getDueDate());
+
+        if(!taskDTO.getTitle().isBlank()) {
+            task.setTitle(taskDTO.getTitle());
+        }
+
+        if(!taskDTO.getDescription().isBlank()) {
+            task.setDescription(taskDTO.getDescription());
+        }
+
+        if(!taskDTO.getStatus().isBlank()) {
+            task.setStatus(taskDTO.getStatus());
+        }
+
+        if(!taskDTO.getDueDate().isBefore(LocalDateTime.now())) {
+            task.setDueDate(taskDTO.getDueDate());;
+        }
 
         return taskRepo.save(task);
     }
