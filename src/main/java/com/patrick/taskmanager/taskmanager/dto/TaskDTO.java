@@ -6,21 +6,21 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Setter
 @Getter
 public class TaskDTO {
+
     @NotBlank
     private String title;
 
     private String description;
 
-    @NotBlank(message = "Status is required")
+    @NotBlank
     private String status;
 
-    @FutureOrPresent(message = "Due date must be today or in the future!")
+    @FutureOrPresent
     private LocalDateTime dueDate;
 
 }
