@@ -1,6 +1,9 @@
 package com.patrick.taskmanager.taskmanager.dto;
 
 
+import com.patrick.taskmanager.taskmanager.model.TaskStatus;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -17,8 +20,8 @@ public class TaskDTO {
 
     private String description;
 
-    @NotBlank
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status;
 
     @FutureOrPresent
     private LocalDateTime dueDate;

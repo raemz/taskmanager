@@ -1,5 +1,6 @@
 package com.patrick.taskmanager.taskmanager.entity;
 
+import com.patrick.taskmanager.taskmanager.model.TaskStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.cglib.core.Local;
@@ -22,8 +23,12 @@ public class Task {
 
     private String title;
     private String description;
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status;
+
     private LocalDateTime dueDate;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -31,11 +36,14 @@ public class Task {
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
+        this.status = TaskStatus.PENDING;
     }
 
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
+
+
 
 }

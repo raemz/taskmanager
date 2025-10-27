@@ -61,13 +61,11 @@ public class TaskController {
             task.setDescription(taskDTO.getDescription());
         }
 
-        if(!taskDTO.getStatus().isBlank()) {
-            task.setStatus(taskDTO.getStatus());
-        }
-
         if(!taskDTO.getDueDate().isBefore(LocalDateTime.now())) {
             task.setDueDate(taskDTO.getDueDate());;
         }
+
+        task.setStatus(taskDTO.getStatus());
 
         return taskRepo.save(task);
     }
