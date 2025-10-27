@@ -46,7 +46,6 @@ public class TaskController {
     }
 
     // Update a Task
-    // ToDO If you dont want to update a certain field, that field must be the same as before it was updated.
     @PutMapping("/{id}")
     public Task updateTask(@Valid @RequestBody TaskDTO taskDTO, @PathVariable Long id) {
         Task task = taskRepo.findById(id).orElseThrow(() ->
