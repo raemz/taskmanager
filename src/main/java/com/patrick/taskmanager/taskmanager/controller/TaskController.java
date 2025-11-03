@@ -2,8 +2,7 @@ package com.patrick.taskmanager.taskmanager.controller;
 
 import com.patrick.taskmanager.taskmanager.dto.TaskDTO;
 import com.patrick.taskmanager.taskmanager.entity.Task;
-import com.patrick.taskmanager.taskmanager.exception.TaskNotFoundException;
-import com.patrick.taskmanager.taskmanager.repository.TaskRepository;
+import com.patrick.taskmanager.taskmanager.service.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,69 +12,40 @@ import java.util.List;
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
-    private final TaskRepository taskRepo;
+    private final TaskService taskService;
 
-    public TaskController(TaskRepository taskRepo) {
-        this.taskRepo = taskRepo;
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
     }
 
     // Get all task
     @GetMapping
     public List<Task> getAllTask() {
-        return taskRepo.findAll();
+        return taskService.getAllTask();
     }
 
     // Get a specific Task
     @GetMapping("{id}")
     public Task getTask(@PathVariable Long id) {
-        return taskRepo.findById(id).orElseThrow(() ->
-                    new TaskNotFoundException("Task with ID " + id + " is not found!")
-                );
+        return taskService.getTask(id);
     }
 
     // Add a task
     @PostMapping
     public Task addTask(@Valid @RequestBody TaskDTO taskDTO) {
-
-        Task task = new Task();
-        task.setTitle(taskDTO.getTitle());
-        task.setDescription(taskDTO.getDescription());
-        task.setStatus(taskDTO.getStatus());
-        task.setDueDate(taskDTO.getDueDate());
-        return taskRepo.save(task);
+        return taskService.addTask(taskDTO);
     }
 
     // Update a Task
     @PutMapping("/{id}")
     public Task updateTask(@Valid @RequestBody TaskDTO taskDTO, @PathVariable Long id) {
-        Task task = taskRepo.findById(id).orElseThrow(() ->
-                new TaskNotFoundException("Task with ID " + id + " is not found!")
-        );
-
-        if(!taskDTO.getTitle().isBlank()) {
-            task.setTitle(taskDTO.getTitle());
-        }
-
-        if(!taskDTO.getDescription().isBlank()) {
-            task.setDescription(taskDTO.getDescription());
-        }
-
-        if(!taskDTO.getDueDate().isBefore(LocalDateTime.now())) {
-            task.setDueDate(taskDTO.getDueDate());;
-        }
-
-        task.setStatus(taskDTO.getStatus());
-
-        return taskRepo.save(task);
+        return taskService.updateTask(taskDTO, id);
     }
 
     // Delete a task
     @DeleteMapping("/{id}")
     public void deleteTask(@PathVariable Long id) {
-        Task task = taskRepo.findById(id).orElseThrow(() ->
-                new TaskNotFoundException("Task with ID " + id + " is not found!")
-        );
-        taskRepo.delete(task);
+        taskService.deleteTask(id);
     }
 
 }

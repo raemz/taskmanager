@@ -3,11 +3,7 @@ package com.patrick.taskmanager.taskmanager.entity;
 import com.patrick.taskmanager.taskmanager.model.TaskStatus;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.cglib.core.Local;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Data
