@@ -26,14 +26,14 @@ public class TaskService {
     }
 
     // Get a specific task
-    public Task getTask(@PathVariable Long id) {
+    public Task getTask(Long id) {
         return taskRepo.findById(id).orElseThrow(() ->
                 new TaskNotFoundException("Task with ID " + id + " is not found!")
         );
     }
 
     // Add a task
-    public Task addTask(@Valid @RequestBody TaskDTO taskDTO) {
+    public Task addTask(TaskDTO taskDTO) {
 
         Task task = new Task();
         task.setTitle(taskDTO.getTitle());
@@ -44,7 +44,7 @@ public class TaskService {
     }
 
     // Update a task
-    public Task updateTask(@Valid @RequestBody TaskDTO taskDTO, @PathVariable Long id) {
+    public Task updateTask(TaskDTO taskDTO, Long id) {
         Task task = taskRepo.findById(id).orElseThrow(() ->
                 new TaskNotFoundException("Task with ID " + id + " is not found!")
         );
@@ -67,7 +67,7 @@ public class TaskService {
     }
 
     // Delete a task
-    public void deleteTask(@PathVariable Long id) {
+    public void deleteTask(Long id) {
         Task task = taskRepo.findById(id).orElseThrow(() ->
                 new TaskNotFoundException("Task with ID " + id + " is not found!")
         );
